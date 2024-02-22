@@ -12,16 +12,20 @@ The Hypervisor that we chose was Qemu, a standard virtualization and hypervisor 
 
 Originally, the virtual machine was going to be a debian system. However, many issues facing the Nvidia Cuda drivers forced us to switch to a more up-to-date system, that being Fedora 37. The choice of Fedora and its specific version due to the familiarty of the system as well as the version number being explicitly stated on the Cuda driver installation guide.
 
+To run the language models, we used a program called "Ollama" a program that acts similarly to Docker, but for LLMs. 
+
 The language models that we chose are as follows :
 - Microsoft's Phi model (2.7B)
 - Llava (7B)
 - Mistral (7B)
-- 
+- Orca-mini (3B)
+- Orca2 (7B)
+- Deepseek-coder (6.7B)
 
-- Running a Fedora virtual machine
-- Supports several LLMs
-    - Phi
-    - Mixtral
-    - Orca
-    - Etc.
-- Able to be interfaced through WebUI
+We chose these models because of the variety of strengths that they have.
+
+The webUI that we chose is OpenWebUI, an open-source project that can be used to interface with Ollama. THe reason we chose this UI is because it is rebust and secure, allowing for different user accounts with saved chats and allows for maneagement of Language models without using the command line.
+
+## How it works
+
+To begin the installation, 
