@@ -32,6 +32,6 @@ The webUI that we chose is OpenWebUI, an open-source project that can be used to
 
 Before installing the operating system to the server, we needed to identify the specifications. In order to do this, we booted our server into the BIOS. After a few memory checks, the server booted into the about section of the server's BIOS. From there, we identified two 16-core Intel Xeon E5-2450Ls clocked at 2.3GHz, 96Gb of RAM, four 2Tb hard drives, and much more information.
 
-To accelerate the AI on our server, we installed an Nvidia GTX 1070 (as that was the best one readily available to us). The server box was too small to fit the GPU internally, so instead, we simply ran the PCIe cable extender outside of the server chasis and let the GPU sit on the outside.
+To accelerate the AI on our server, we installed an Nvidia GTX 1070 (as that was the best one readily available to us). The server box was too small to fit the GPU internally, so instead, we simply ran the PCIe cable extender outside of the server chasis.
 
 Now that we knew our specifications, we set up our disks to run in RAID5
