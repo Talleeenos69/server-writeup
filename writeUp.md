@@ -12,6 +12,8 @@ We chose RAID5 as our data storage virtualization technology. This was due to th
 
 The Hypervisor that we chose was QEMU, a standard virtualization and hypervisor software for Linux and Unix-based systems. The installation was rather simple due to cockpit providing an installer via the GUI.
 
+To accelerate the AI on our server, we installed an Nvidia GTX 1070 (as that was the best one readily available to us). The server's chasis was too small to fit the GPU internally, so instead, we simply ran a PCIe cable extender outside of the server chasis.
+
 Originally, the virtual machine was going to be a debian system. However, many issues facing the Nvidia CUDA drivers forced us to switch to a more up-to-date system, that being Fedora 37. The choice of Fedora and its specific version due to the familiarty of the system as well as the version number being explicitly stated on the Cuda driver installation guide.
 
 To run the language models, we used a program called "Ollama" a program that acts similarly to Docker, but for LLMs. 
@@ -31,7 +33,5 @@ The webUI that we chose is OpenWebUI, an open-source project that can be used to
 ## How we set it up
 
 Before installing the operating system to the server, we needed to identify the specifications. In order to do this, we booted our server into the BIOS. After a few memory checks, the server booted into the about section of the server's BIOS. From there, we identified two 16-core Intel Xeon E5-2450Ls clocked at 2.3GHz, 96Gb of RAM, four 2Tb hard drives, and much more information.
-
-To accelerate the AI on our server, we installed an Nvidia GTX 1070 (as that was the best one readily available to us). The server box was too small to fit the GPU internally, so instead, we simply ran the PCIe cable extender outside of the server chasis.
 
 Now that we knew our specifications, we set up our disks to run in RAID5
