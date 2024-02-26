@@ -6,7 +6,7 @@ The purpose of this assignment is to show that Tallen Pelissero and Joel Kamming
 
 ## Personal Choices
 
-For the host operating system, we chose Fedora 39 Server edition. This was due to the stable, yet up-to-date packages that the system provides, as well as cockpit (A web interface to monitor and control various parts of the system) coming installed by default.
+For the host server operating system, we chose Fedora 39 Server edition. This was due to the stable, yet up-to-date packages that the system provides, as well as cockpit (A web interface to monitor and control various parts of the system) coming installed by default.
 
 We chose RAID5 as our data storage virtualization technology. This was due to the fact that it allows for one HDD to fail at any time, with no data being lost. The downside to this is that RAID5 requires 1 drive of overhead, which was 2Tb in our case.
 
@@ -34,4 +34,6 @@ The webUI that we chose is OpenWebUI, an open-source project that can be used to
 
 Before installing the operating system to the server, we needed to identify the specifications. In order to do this, we booted our server into the BIOS. After a few memory checks, the server booted into the about section of the server's BIOS. From there, we identified two 16-core Intel Xeon E5-2450Ls clocked at 2.3GHz, 96Gb of RAM, four 2Tb hard drives, and much more information.
 
-Now that we knew our specifications, we set up our disks to run in RAID5
+Now that we knew our specifications, we configured our hard drives in RAID 5. We did this by entering the systems disk configuration tool in the BIOS.
+
+Once our disks were configured, we installed Fedora server 39 (The latest version as of the time of writing)
