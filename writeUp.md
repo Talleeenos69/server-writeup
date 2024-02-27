@@ -59,7 +59,5 @@ Now that we knew our specifications, we configured our hard drives in RAID 5. We
 
 #### OS Installation :
 
-The purpose of this assignment is to show that Tallen Pelissero and Joel Kamminga are capable of deploying Large Language Models (LLMs) on a virtual machine with GPU acceleration.
-
 Once our disks were configured, we installed Fedora server 39. (The latest version as of the time of writing) This was quite simple via the graphical installer, [Anaconda](https://docs.fedoraproject.org/en-US/fedora/f36/install-guide/install/Installing_Using_Anaconda/). We opted out of creating a root account, and instead added the newly created user to the 'Wheel' group, which gives us administrator privileges to the server.
 
