@@ -37,10 +37,5 @@ Before installing the operating system to the server, we needed to identify the 
 
 Now that we knew our specifications, we configured our hard drives in RAID 5. We did this by entering the systems disk configuration tool in the BIOS. We opted to format the disks while setting them up, which is not necessary.
 
-Once our disks were configured, we installed Fedora server 39. (The latest version as of the time of writing) This was quite simple via the graphical installer, [Anaconda](https://docs.fedoraproject.org/en-US/fedora/f36/install-guide/install/Installing_Using_Anaconda/). We opted out of creating a root account, and instead added the newly created user to the 'Wheel' group, which gives us administrator privileges to the server. 
+Once our disks were configured, we installed Fedora server 39. (The latest version as of the time of writing) This was quite simple via the graphical installer, [Anaconda](https://docs.fedoraproject.org/en-US/fedora/f36/install-guide/install/Installing_Using_Anaconda/). We opted out of creating a root account, and instead added the newly created user to the 'Wheel' group, which gives us administrator privileges to the server.
 
- 
-
- 
-
- 
