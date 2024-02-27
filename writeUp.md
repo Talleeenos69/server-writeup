@@ -16,7 +16,7 @@ We chose RAID5 as our data storage virtualization technology. This was due to th
 
 #### Hypervisor :
 
-The Hypervisor that we chose was [QEMU](https://www.qemu.org/), a standard virtualization and hypervisor software for Linux and Unix-based systems. The installation was rather simple due to cockpit providing an installer via the GUI.
+The Hypervisor that we chose was [Libvirt](https://libvirt.org/), a standard virtualization and hypervisor API for Linux and Unix-based systems. The installation was rather simple due to cockpit providing an installer via the GUI.
 
 #### GPU :
 
@@ -51,7 +51,7 @@ The web UI that we chose is [OpenWebUI](https://github.com/open-webui/open-webui
 
 #### Specs :
 
-Before installing the operating system to the server, we needed to identify the specifications. To do this, we needed to connect a display and keyboard to interface with the server. Next, we booted our server into the BIOS by repeatedly pressing the 'f10' key. After a few memory checks, the server booted into the about section of the server's BIOS. From there, we identified two 8-core, 16 thread [Intel Xeon E5-2450L](https://ark.intel.com/content/www/us/en/ark/products/64610/intel-xeon-processor-e5-2450l-20m-cache-1-80-ghz-8-00-gt-s-intel-qpi.html)s clocked at 2.8GHz with a boost clock of 2.3GHz, 96Gb of RAM, four 2Tb hard drives, etc.
+Before installing the operating system to the server, we needed to identify the specifications. To do this, we needed to connect a display and keyboard to interface with the server. Next, we booted our server into the BIOS by repeatedly pressing the 'f10' key. After a few memory checks, the server booted into the about section of the server's BIOS. From there, we identified two 8-core, 16 thread [Intel Xeon E5-2450L](https://ark.intel.com/content/www/us/en/ark/products/64610/intel-xeon-processor-e5-2450l-20m-cache-1-80-ghz-8-00-gt-s-intel-`q`pi.html)s clocked at 2.8GHz with a boost clock of 2.3GHz, 96Gb of RAM, four 2Tb hard drives, etc.
 
 #### Disk Setup :
 
@@ -61,3 +61,32 @@ Now that we knew our specifications, we configured our hard drives in RAID 5. We
 
 Once our disks were configured, we installed Fedora server 39. (The latest version as of the time of writing) This was quite simple via the graphical installer, [Anaconda](https://docs.fedoraproject.org/en-US/fedora/f36/install-guide/install/Installing_Using_Anaconda/). We opted out of creating a root account, and instead added the newly created user to the 'Wheel' group, which gives us administrator privileges to the server.
 
+#### Software Setup :
+
+After the system was installed, we needed to install the required packages to get out virtual machine running.
+
+Convieniently, the Cockpit interface allows for the installation of common server packages. One of these packages is the "Libvirt" package which allows us to create and run virtual machines. This also gives us a nice UI within Cockpit for managing and running VMs.
+
+Once the libvirt package was installed, we needed to enable the service. This can be done via the GUI or by running a simple command:
+
+```
+# systemctl enable libvirtd --now
+```
+This command enables and starts the service, and this also tells [systemd](https://systemd.io/) to start the service every time the system boots.
+
+#### Virtual Machine Setup and Issues :
+
+Now that the virtualization deamon was running, we needed to deploy a virtual machine.
+
+From the Cockpit "*Virtual Machines*" tab, we selected "Create VM" and configured it as follows:
+
+```
+Name : Ollama
+Connection : System
+Installation Type : Download an OS
+Operating System : Debian 12 (bookworm)
+Storage : Create new qcow2 volume
+Storage Limit : 120 GiB
+Memory : 40.0 GiB
+```
+Then we selected "*Create and Run*"
