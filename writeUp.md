@@ -6,17 +6,31 @@ The purpose of this assignment is to show that Tallen Pelissero and Joel Kamming
 
 ## Personal Choices
 
+#### Operating system :
+
 For the host server operating system, we chose Fedora 39 Server edition. This was due to the stable, yet up-to-date packages that the system provides, as well as [Cockpit](https://cockpit-project.org/) (A web interface to monitor and control various parts of the system) coming installed by default. We chose Fedora over a system like [Debian](https://www.debian.org) because it is much more up-to-date and therefore performant. Alternatively, we chose to steer away from a system like [Arch Linux](https://archlinux.org/) because the lack of support distros like this have and the packages tend to be unstable.
+
+#### Disk Maneagement :
 
 We chose RAID5 as our data storage virtualization technology. This was due to the fact that it allows for one HDD to fail at any time, without any data being lost. We chose RAID5 despite its 1 drive overhead because we wanted to make sure our system was redundant and would not fail if one of our drives was removed.
 
+#### Hypervisor :
+
 The Hypervisor that we chose was [QEMU](https://www.qemu.org/), a standard virtualization and hypervisor software for Linux and Unix-based systems. The installation was rather simple due to cockpit providing an installer via the GUI.
+
+#### GPU :
 
 To accelerate the LLMs on our server, we installed an Nvidia GTX 1070 (as that was the best one readily available to us). The server's chassis was too small to fit the GPU internally, so instead, we simply ran a PCIe cable extender outside of the server chassis.
 
+#### Virtual Machine :
+
 Originally, the virtual machine was going to be a Debian system. However, many issues facing the Nvidia CUDA drivers forced us to switch to a more up-to-date system, that being Fedora 37. The choice of Fedora and its specific version due to the familiarity of the system as well as the version number being explicitly stated on the Cuda driver installation guide.
 
+#### LLM Deployment Software :
+
 To run the language models, we used a program called [Ollama](https://ollama.com/) a program that acts similarly to Docker, but for LLMs.
+
+#### Language Models :
 
 The language models that we chose are as follows : 
 
@@ -28,6 +42,8 @@ The language models that we chose are as follows :
 - [Deepseek-coder (6.7B)](https://ollama.com/library/deepseek-coder)
 
 We chose these models because of the variety of strengths that they offer, such as excellent reasoning, a high degree of language understanding, and proficient skills in programming.
+
+#### Frontend :
 
 The web UI that we chose is [OpenWebUI](https://github.com/open-webui/open-webui), an open-source project that can be used to interface with Ollama. The reason we chose this UI is because it is robust and secure, allowing for different user accounts with saved chats and allows for management of Language models without using the command line. We chose not to port forward the interface due to security concerns. However, any user connected to the school's local network can access the URL at any time.
 
