@@ -49,9 +49,17 @@ The web UI that we chose is [OpenWebUI](https://github.com/open-webui/open-webui
 
 ## How we set it up
 
+#### Specs :
+
 Before installing the operating system to the server, we needed to identify the specifications. To do this, we needed to connect a display and keyboard to interface with the server. Next, we booted our server into the BIOS by repeatedly pressing the 'f10' key. After a few memory checks, the server booted into the about section of the server's BIOS. From there, we identified two 8-core, 16 thread [Intel Xeon E5-2450L](https://ark.intel.com/content/www/us/en/ark/products/64610/intel-xeon-processor-e5-2450l-20m-cache-1-80-ghz-8-00-gt-s-intel-qpi.html)s clocked at 2.8GHz with a boost clock of 2.3GHz, 96Gb of RAM, four 2Tb hard drives, etc.
 
+#### Disk Setup :
+
 Now that we knew our specifications, we configured our hard drives in RAID 5. We did this by entering the systems disk configuration tool in the BIOS. We opted to format the disks while setting them up, which is not necessary.
+
+#### OS Installation :
+
+The purpose of this assignment is to show that Tallen Pelissero and Joel Kamminga are capable of deploying Large Language Models (LLMs) on a virtual machine with GPU acceleration.
 
 Once our disks were configured, we installed Fedora server 39. (The latest version as of the time of writing) This was quite simple via the graphical installer, [Anaconda](https://docs.fedoraproject.org/en-US/fedora/f36/install-guide/install/Installing_Using_Anaconda/). We opted out of creating a root account, and instead added the newly created user to the 'Wheel' group, which gives us administrator privileges to the server.
 
