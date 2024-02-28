@@ -16,7 +16,7 @@ We chose RAID5 as our data storage virtualization technology. This was due to th
 
 #### Hypervisor :
 
-The Hypervisor that we chose was [Libvirt](https://libvirt.org/), a standard virtualization and hypervisor API for Linux and Unix-based systems. The installation was rather simple due to cockpit providing an installer via the GUI.
+The Hypervisor that we chose was [KVM](https://www.kernel.org/doc/html/latest/virt/kvm/index.html), a standard virtualization and hypervisor for Linux and Unix-based systems. The installation was rather simple due to cockpit providing an installer via the GUI.
 
 #### GPU :
 
@@ -89,4 +89,23 @@ Storage : Create new qcow2 volume
 Storage Limit : 120 GiB
 Memory : 40.0 GiB
 ```
-Then we selected "*Create and Run*"
+Then we selected "*Create and edit*" which started the download for the iso file and prompted us to the advanced configuration menu. From there, we edited the vCPU configuration.
+
+```
+vCPU maximum : 8
+vCPU count : 8
+Sockets : 2
+Cores per socket : 2
+Threads per core : 2
+Mode : host-passthrough
+```
+Outside of the CPU configuration menu, we selected "*Autostart*" which starts the virtual machine at boot.
+
+Under the *Network Interfaces* tab, we changes the settings as follows;
+```
+Interface type : Direct Attachment
+Source : eno1 (your primary network connection)
+Model : e1000e (PCI)
+```
+This allows the virtual machine to be assigned an IP address on the LAN so we can secure shell into it and access the future web interface.
+
