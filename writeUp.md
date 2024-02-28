@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The purpose of this assignment is to show that Tallen Pelissero and Joel Kamminga are capable of deploying Large Language Models (LLMs) on a virtual machine with GPU acceleration.
+The purpose of this assignment is to show that Tallen Pelissero and Joel Kamminga are capable of deploying Large Language Models (LLM/'s) on a virtual machine with GPU acceleration.
 
 ## Personal Choices
 
@@ -16,7 +16,7 @@ We chose RAID5 as our data storage virtualization technology. This was due to th
 
 #### Hypervisor :
 
-The Hypervisor that we chose was [KVM](https://www.kernel.org/doc/html/latest/virt/kvm/index.html), a standard virtualization and hypervisor for Linux and Unix-based systems. The installation was rather simple due to cockpit providing an installer via the GUI.
+The Hypervisor that we chose was [KVM](https://www.kernel.org/doc/html/latest/virt/kvm/index.html), a standard virtualization and hypervisor for Linux and Unix-based systems. A hypervisor is a piece of software that allows for the creation and management of virtual machines (A virtual machine is a virtual computer within a computer). The installation of the hypervisor was rather simple due to cockpit providing an installer via the GUI.
 
 #### GPU :
 
@@ -56,6 +56,10 @@ Before installing the operating system to the server, we needed to identify the 
 #### Disk Setup :
 
 Now that we knew our specifications, we configured our hard drives in RAID 5. We did this by entering the systems disk configuration tool in the BIOS. We opted to format the disks while setting them up, which is not necessary.
+
+#### GPU Installation :
+
+To accelerate the Large Language Models, we needed a CUDA compatable GPU to run 
 
 #### OS Installation :
 
@@ -107,5 +111,4 @@ Interface type : Direct Attachment
 Source : eno1 (your primary network connection)
 Model : e1000e (PCI)
 ```
-This allows the virtual machine to be assigned an IP address on the LAN so we can secure shell into it and access the future web interface.
-
+This allows the virtual machine to be assigned an IP address on the LAN (Local Area Network) so we can secure shell (SSH) into it and access the future web interface.
