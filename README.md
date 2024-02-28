@@ -1,6 +1,6 @@
 # server-writeup
 
-This paper serves to detail the our (Tallen Pelissero and Joel Kamminga) challenge of deploying Large Language Models (LLMs) on a virtual machine with GPU acceleration.
+This paper serves to detail our (Tallen Pelissero and Joel Kamminga) challenge of deploying Large Language Models (LLMs) on a virtual machine with GPU acceleration.
 
 Our primary objective is to demonstrate our proficiency in this task, showing that we are capable of navigating various technical decisions and challenges that are typical of such deployments. 
 
