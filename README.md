@@ -1,4 +1,4 @@
-# server-writeup
+# Installing Large Language Models (LLMs) on a Virtual Machine
 
 This paper serves to detail our (Tallen Pelissero and Joel Kamminga) challenge of deploying Large Language Models (LLMs) on a virtual machine with GPU acceleration.
 
