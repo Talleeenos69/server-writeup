@@ -103,6 +103,8 @@ Cores per socket : 2
 Threads per core : 2
 Mode : host-passthrough
 ```
+Since language models are not typically CPU bound, we were conservative of the amount of cores we gave the virtual machine.
+
 Outside of the CPU configuration menu, we selected "*Autostart*" which starts the virtual machine at boot.
 
 Under the *Network Interfaces* tab, we changes the settings as follows;
@@ -112,3 +114,20 @@ Source : eno1 (your primary network connection)
 Model : e1000e (PCI)
 ```
 This allows the virtual machine to be assigned an IP address on the LAN (Local Area Network) so we can secure shell (SSH) into it and access the future web interface.
+
+Our first issue began while trying to get the PCI forwarding to work. After a bit of researching, we discovered that we have to [add paramaters to GRUB](https://access.redhat.com/documentation/en-us/red_hat_virtualization/4.3/html-single/setting_up_an_nvidia_gpu_for_a_virtual_machine_in_red_hat_virtualization/index#Enabling_IOMMU_support_in_the_host_machine_kernel_nvidia_gpu_passthrough), the boot manager, to give the GPU to the libvirt service which can then give the device to the virtual machine.
+
+```
+# nano /etc/default/grub
+```
+
+Add the following to `GRUB_CMDLINE_LINUX=`
+
+Intel :
+```
+intel_iommu=on
+```
+AMD :
+```
+amd_iommu=on
+```
