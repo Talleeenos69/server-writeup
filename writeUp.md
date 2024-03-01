@@ -137,6 +137,16 @@ Save and close the file, then update the GRUB entries.
 ```
 # update-grub
 ```
+## Applications of the server
+
+This server (and specifically the LLMs on it) can act as a resource for students at the school. It's meant to give them access to language models at no fee while monitoring the way they use it.
+
+Potential applications for students:
+- Generating notes
+- Creation of studying tools
+- Proofreading (Checking for typos, grammatical errors, etc,)
+
+The purpose of this server is NOT for it to be used to plagiarize! Having control over the server means that it can be monitored for any nefarious use.
 
 ## Glossary (Organized in the order in which terms appear)
 
