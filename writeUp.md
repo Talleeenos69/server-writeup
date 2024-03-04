@@ -198,10 +198,12 @@ Once Ollama was installed it was time to install a language model and test the p
 
 To install and run the model, we ran this command:
 ```
-ollama run phi:latest
+$ ollama run phi:latest
 ```
 
 This will install and run the Phi model and give us a CLI (Command Line Interface) to communicate with the model.
+
+
 
 ## Applications of the server
 
