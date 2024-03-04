@@ -84,6 +84,10 @@ Now that the virtualization deamon was running, we needed to deploy a virtual ma
 
 From the Cockpit "*Virtual Machines*" tab, we selected "Create VM" and configured it as follows:
 
+**It is important to note that we had issues with Debian. Skip to [HERE]() to see our final Fedora Configuration**
+
+#### Debain VM configuration :
+
 ```
 Name : Ollama
 Connection : System
@@ -93,6 +97,9 @@ Storage : Create new qcow2 volume
 Storage Limit : 120 GiB
 Memory : 40.0 GiB
 ```
+
+#### vCPU Configuration :
+
 Then we selected "*Create and edit*" which started the download for the iso file and prompted us to the advanced configuration menu. From there, we edited the vCPU configuration.
 
 ```
@@ -107,6 +114,8 @@ Since language models are not typically CPU bound, we were conservative of the a
 
 Outside of the CPU configuration menu, we selected "*Autostart*" which starts the virtual machine at boot.
 
+#### VM Network Configuration :
+
 Under the *Network Interfaces* tab, we changes the settings as follows;
 ```
 Interface type : Direct Attachment
@@ -115,17 +124,18 @@ Model : e1000e (PCI)
 ```
 This allows the virtual machine to be assigned an IP address on the LAN (Local Area Network) so we can secure shell (SSH) into it and access the future web interface.
 
+#### PCI passthrough :
 Our first issue began while trying to get the PCI forwarding to work. After a bit of researching, we discovered that we have to [add paramaters to GRUB](https://access.redhat.com/documentation/en-us/red_hat_virtualization/4.3/html-single/setting_up_an_nvidia_gpu_for_a_virtual_machine_in_red_hat_virtualization/index#Enabling_IOMMU_support_in_the_host_machine_kernel_nvidia_gpu_passthrough), the boot manager, to give the GPU to the libvirt service which can then give the device to the virtual machine. 
 
-On the host machine, do the following:
+On the host machine, we did the following:
 
 ```
 # nano /etc/default/grub
 ```
 
-Add the following to `GRUB_CMDLINE_LINUX=`
+Added the following to `GRUB_CMDLINE_LINUX=`
 
-Intel :
+Intel (We did this because we are on an Intel system) :
 ```
 "intel_iommu=on rd.lvm.lv=fedora/root rhgb quiet rd.driver.blacklist=nouveau modprobe.blacklist=nouveau"
 ```
@@ -133,9 +143,30 @@ AMD :
 ```
 "amd_iommu=on rd.lvm.lv=fedora/root rhgb quiet rd.driver.blacklist=nouveau modprobe.blacklist=nouveau"
 ```
-Save and close the file, then update the GRUB entries.
+We then saved and closed the file, updated the GRUB entries, and rebooted.
 ```
-# update-grub
+# update-grub && reboot
+```
+Once booted into the system, we went back to the virtual machine tab in Cockpit and turned off the virtual machine.
+
+Next, we opened the configuration menu on the virtual machine and scrolled down to the *host devices* section. We selected the *Add Host Device* button, and switched the device list to only show PCI devices. We added the following devices and clicked "Add" to give them over to the virtual machine.
+	
+- GP104 [GeForce GTX 1070]
+
+- GP104 High Definition Audio Controller
+
+###### **(We added the Audio controller to avoid any issues that may occur in the driver installation step.)*
+
+#### Setting up Ollama :
+
+Boot into the virtual machine and install the curl package.
+```
+# apt install curl
+```
+Ollama provides and nice [auto installation script](https://ollama.com/download/linux) that installs Nvidia drivers and all the packages required to run LLMs.
+
+```
+curl -fsSL https://ollama.com/install.sh | sh
 ```
 ## Applications of the server
 
