@@ -168,6 +168,7 @@ Ollama provides and nice [auto installation script](https://ollama.com/download/
 ```
 curl -fsSL https://ollama.com/install.sh | sh
 ```
+
 ## Applications of the server
 
 This server (and specifically the LLMs on it) can act as a resource for students at the school. It's meant to give them access to language models at no fee while monitoring the way they use it.
@@ -178,15 +179,3 @@ Potential applications for students:
 - Proofreading (Checking for typos, grammatical errors, etc,)
 
 The purpose of this server is NOT for it to be used to plagiarize! Having control over the server means that it can be monitored for any nefarious use.
-
-## Glossary (Organized in the order in which terms appear)
-
-- **Virtual Machine** - A virtual instance of a computer running on another computer
-- **RAID** - A hard drive redundancy that allows for any one hard drive to fail without any permanent loss of data
-- **PCIe** - A high-bandwidth type of connection for transfering data
-- **CUDA** - A tool used to enable GPU-Accelerated computing
-- **BIOS** - A program used to start the computer
-- **Open source** - Describes software which has its code released to the public, and therefore can be altered to its users' content
-- **CPU bound** - Describes softwhich which runs only on the CPU (without utilizing the power of the GPU)
-- **IP Address** - A unique identifier given to each computer and network
-- **Secure Shell** - A method of remotely accessing the functions of a computer
