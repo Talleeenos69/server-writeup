@@ -163,11 +163,45 @@ Boot into the virtual machine and install the curl package.
 ```
 # apt install curl
 ```
-Ollama provides and nice [auto installation script](https://ollama.com/download/linux) that installs Nvidia drivers and all the packages required to run LLMs.
+Ollama provides and nice [auto installation script](https://ollama.com/download/linux) that installs Nvidia drivers and all the packages required to run LLMs. The installation is one simple command.
 
 ```
 curl -fsSL https://ollama.com/install.sh | sh
 ```
+This command successfully installed Ollama, however failed to install the Cuda drivers on our Debian system.
+
+#### Fedora VM configuration :
+
+To fix this, we simply switched to Fedora 37. The reason we did this was because it was explicitly stated as supported on the driver download page.
+
+All of the above steps still apply except we changed the Operating System to Fedora 37.
+
+```
+Name : Ollama
+Connection : System
+Installation Type : Download an OS
+Operating System : Fedora 37
+Storage : Create new qcow2 volume
+Storage Limit : 120 GiB
+Memory : 40.0 GiB
+```
+
+There is also a slightly different command to install curl.
+
+```
+# dnf install curl
+```
+
+#### LLM installation and Performance
+
+Once Ollama was installed it was time to install a language model and test the performance. To do this, we went to the [LLM repository](https://ollama.com/library) provided by Ollama, and downloaded a small model to quickly test. The model we initially chose was [Phi by Microsoft](https://ollama.com/library/phi). This is because it is extremely small and would allow us to test the system before investing more time to download a larger Language Model.
+
+To install and run the model, we ran this command:
+```
+ollama run phi:latest
+```
+
+This will install and run the Phi model and give us a CLI (Command Line Interface) to communicate with the model.
 
 ## Applications of the server
 
