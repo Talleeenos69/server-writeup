@@ -16,11 +16,11 @@ We chose RAID5 as our data storage virtualization technology. This was due to th
 
 #### Hypervisor :
 
-The Hypervisor that we chose was [KVM](https://www.kernel.org/doc/html/latest/virt/kvm/index.html), a standard virtualization and hypervisor for Linux and Unix-based systems. A hypervisor is a piece of software that allows for the creation and management of virtual machines (A virtual machine is a virtual computer within a computer). The installation of the hypervisor was rather simple due to cockpit providing an installer via the GUI.
+The Hypervisor that we chose was [KVM](https://www.kernel.org/doc/html/latest/virt/kvm/index.html), a standard virtualization and hypervisor for Linux and Unix-based systems. A hypervisor is a piece of software that allows for the creation and management of virtual machines (A virtual machine is a virtual computer within a computer). The installation of the hypervisor was simple due to cockpit providing an installer via the GUI.
 
 #### GPU :
 
-To accelerate the LLMs on our server, we installed an Nvidia GTX 1070 (as that was the best one readily available to us). The server's chassis was too small to fit the GPU internally, so instead, we simply ran a PCIe cable extender outside of the server chassis.
+To accelerate the LLMs on our server, we installed a Nvidia GTX 1070 (as that was the best one readily available to us). The server's chassis was too small to fit the GPU internally, so instead, we simply ran a PCIe cable extender outside of the server chassis.
 
 #### Virtual Machine :
 
@@ -32,7 +32,7 @@ To run the language models, we used a program called [Ollama](https://ollama.com
 
 #### Language Models :
 
-The language models that we chose are as follows : 
+The language models that we chose are as follows :
 
 - [Microsoft's Phi model (2.7B)](https://ollama.com/library/phi)
 - [Llava (7B)](https://ollama.com/library/llava)
@@ -59,7 +59,7 @@ Now that we knew our specifications, we configured our hard drives in RAID 5. We
 
 #### GPU Installation :
 
-To accelerate the Large Language Models, we needed a CUDA compatable GPU to run 
+To accelerate the Large Language Models, we needed a CUDA compatible GPU to run
 
 #### OS Installation :
 
@@ -69,18 +69,19 @@ Once our disks were configured, we installed Fedora server 39. (The latest versi
 
 After the system was installed, we needed to install the required packages to get out virtual machine running.
 
-Convieniently, the Cockpit interface allows for the installation of common server packages. One of these packages is the "Libvirt" package which allows us to create and run virtual machines. This also gives us a nice UI within Cockpit for managing and running VMs.
+Conveniently, the Cockpit interface allows for the installation of common server packages. One of these packages is the "Libvirt" package which allows us to create and run virtual machines. This also gives us a nice UI within Cockpit for managing and running VMs.
 
 Once the libvirt package was installed, we needed to enable the service. This can be done via the GUI or by running a simple command:
 
 ```
 # systemctl enable libvirtd --now
 ```
+
 This command enables and starts the service, and this also tells [systemd](https://systemd.io/) to start the service every time the system boots.
 
 #### Virtual Machine Setup and Issues :
 
-Now that the virtualization deamon was running, we needed to deploy a virtual machine.
+Now that the virtualization daemon was running, we needed to deploy a virtual machine.
 
 From the Cockpit "*Virtual Machines*" tab, we selected "Create VM" and configured it as follows:
 
@@ -110,6 +111,7 @@ Cores per socket : 2
 Threads per core : 2
 Mode : host-passthrough
 ```
+
 Since language models are not typically CPU bound, we were conservative of the amount of cores we gave the virtual machine.
 
 Outside of the CPU configuration menu, we selected "*Autostart*" which starts the virtual machine at boot.
@@ -117,42 +119,51 @@ Outside of the CPU configuration menu, we selected "*Autostart*" which starts th
 #### VM Network Configuration :
 
 Under the *Network Interfaces* tab, we changes the settings as follows;
+
 ```
 Interface type : Direct Attachment
 Source : eno1 (your primary network connection)
 Model : e1000e (PCI)
 ```
+
 This allows the virtual machine to be assigned an IP address on the LAN (Local Area Network) so we can secure shell (SSH) into it and access the future web interface.
 
 #### PCI passthrough :
-Our first issue began while trying to get the PCI forwarding to work. After a bit of researching, we discovered that we have to [add paramaters to GRUB](https://access.redhat.com/documentation/en-us/red_hat_virtualization/4.3/html-single/setting_up_an_nvidia_gpu_for_a_virtual_machine_in_red_hat_virtualization/index#Enabling_IOMMU_support_in_the_host_machine_kernel_nvidia_gpu_passthrough), the boot manager, to give the GPU to the libvirt service which can then give the device to the virtual machine. 
+
+Our first issue began while trying to get the PCI forwarding to work. After a bit of researching, we discovered that we have to [add parameters to GRUB](https://access.redhat.com/documentation/en-us/red_hat_virtualization/4.3/html-single/setting_up_an_nvidia_gpu_for_a_virtual_machine_in_red_hat_virtualization/index#Enabling_IOMMU_support_in_the_host_machine_kernel_nvidia_gpu_passthrough), the boot manager, to give the GPU to the libvirt service which can then give the device to the virtual machine.
 
 On the host machine, we did the following:
 
 ```
-# nano /etc/default/grub
+# nano /etc/default/grub 
+
 ```
 
 Added the following to `GRUB_CMDLINE_LINUX=`
 
 Intel (We did this because we are on an Intel system) :
+
 ```
 "intel_iommu=on rd.lvm.lv=fedora/root rhgb quiet rd.driver.blacklist=nouveau modprobe.blacklist=nouveau"
 ```
+
 AMD :
+
 ```
 "amd_iommu=on rd.lvm.lv=fedora/root rhgb quiet rd.driver.blacklist=nouveau modprobe.blacklist=nouveau"
 ```
+
 We then saved and closed the file, updated the GRUB entries, and rebooted.
+
 ```
 # update-grub && reboot
 ```
+
 Once booted into the system, we went back to the virtual machine tab in Cockpit and turned off the virtual machine.
 
 Next, we opened the configuration menu on the virtual machine and scrolled down to the *host devices* section. We selected the *Add Host Device* button, and switched the device list to only show PCI devices. We added the following devices and clicked "Add" to give them over to the virtual machine.
-	
-- GP104 [GeForce GTX 1070]
 
+- GP104 [GeForce GTX 1070]
 - GP104 High Definition Audio Controller
 
 ###### **(We added the Audio controller to avoid any issues that may occur in the driver installation step.)*
@@ -160,21 +171,24 @@ Next, we opened the configuration menu on the virtual machine and scrolled down 
 #### Setting up Ollama :
 
 Boot into the virtual machine and install the curl package.
+
 ```
 # apt install curl
 ```
+
 Ollama provides and nice [auto installation script](https://ollama.com/download/linux) that installs Nvidia drivers and all the packages required to run LLMs. The installation is one simple command.
 
 ```
 curl -fsSL https://ollama.com/install.sh | sh
 ```
+
 This command successfully installed Ollama, however failed to install the Cuda drivers on our Debian system.
 
 #### Fedora VM configuration :
 
 To fix this, we simply switched to Fedora 37. The reason we did this was because it was explicitly stated as supported on the driver download page.
 
-All of the above steps still apply except we changed the Operating System to Fedora 37.
+All the above steps still apply except we changed the Operating System to Fedora 37.
 
 ```
 Name : Ollama
@@ -197,13 +211,14 @@ There is also a slightly different command to install curl.
 Once Ollama was installed it was time to install a language model and test the performance. To do this, we went to the [LLM repository](https://ollama.com/library) provided by Ollama, and downloaded a small model to quickly test. The model we initially chose was [Phi by Microsoft](https://ollama.com/library/phi). This is because it is extremely small and would allow us to test the system before investing more time to download a larger Language Model.
 
 To install and run the model, we ran this command:
+
 ```
 $ ollama run phi:latest
 ```
 
 This will install and run the Phi model and give us a CLI (Command Line Interface) to communicate with the model.
 
-### OpenWebUI Setup
+### Open WebUI Setup
 
 #### Docker Installation
 
@@ -229,13 +244,14 @@ Start Docker:
 ```
 
 Test Docker installation:
+
 ```
 # docker run hello-world
-```
+``` 
 
 #### OpenWebUI Installation
 
-Now that docker is installed, we need to install Open WebUI in a docker container. Since we already have Ollama running on our machine, we can simple run this command to install and start the interface.
+Now that docker is installed, we need to install Open WebUI in a docker container. Since we already have Ollama running on our machine, we can simply run this command to install and start the interface.
 
 ```
 docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
@@ -247,11 +263,11 @@ After installation, you can access Open WebUI at http://localhost:3000 or whatev
 
 ## Applications of the server
 
-This server (and specifically the LLMs on it) can act as a resource for students at the school. It's meant to give them access to language models at no fee to help them study, create notes, learn new information and much more.
+This server (and specifically the LLMs on it) can act as a resource for students at the school. It is meant to give them access to language models at no fee to help them study, create notes, learn new information and much more.
 
 Potential applications for students:
 - Generating notes
 - Creation of studying tools
-- Proofreading (Checking for typos, grammatical errors, etc,)
+- Proofreading (Checking for typos, grammatical errors, etc.)
 
 The purpose of this server is NOT for it to be used to plagiarize! Having control over the server means that we can revoke users that we suspect are using it maliciously.
