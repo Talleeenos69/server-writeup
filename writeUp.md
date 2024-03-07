@@ -203,15 +203,55 @@ $ ollama run phi:latest
 
 This will install and run the Phi model and give us a CLI (Command Line Interface) to communicate with the model.
 
+### OpenWebUI Setup
 
+#### Docker Installation
+
+First, we need to install Docker on the virtual machine by using this [guide](https://docs.docker.com/engine/install/fedora/).
+
+Prerequisites:
+
+```
+# dnf -y install dnf-plugins-core
+$ dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+```
+
+Installation:
+
+```
+# dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+Start Docker:
+
+```
+# systemctl start docker
+```
+
+Test Docker installation:
+```
+# docker run hello-world
+```
+
+#### OpenWebUI Installation
+
+Now that docker is installed, we need to install Open WebUI in a docker container. Since we already have Ollama running on our machine, we can simple run this command to install and start the interface.
+
+```
+docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+```
+
+After installation, you can access Open WebUI at http://localhost:3000 or whatever IP the virtual machine has.
+
+#### Complete!
 
 ## Applications of the server
 
-This server (and specifically the LLMs on it) can act as a resource for students at the school. It's meant to give them access to language models at no fee while monitoring the way they use it.
+This server (and specifically the LLMs on it) can act as a resource for students at the school. It's meant to give them access to language models at no fee to help them study, create notes, learn new information and much more.
 
 Potential applications for students:
 - Generating notes
 - Creation of studying tools
 - Proofreading (Checking for typos, grammatical errors, etc,)
 
-The purpose of this server is NOT for it to be used to plagiarize! Having control over the server means that it can be monitored for any nefarious use.
+The purpose of this server is NOT for it to be used to plagiarize! Having control over the server means that we can revoke users that we suspect are using it maliciously.
